@@ -105,6 +105,14 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -118,6 +126,10 @@
 			<groupId>org.azolla.l</groupId>
 			<artifactId>org.azolla.l.ling</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.azolla.l</groupId>
+            <artifactId>org.azolla.l.sunny</artifactId>
+        </dependency>
 	</dependencies>
 
     <build>
