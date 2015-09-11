@@ -16,7 +16,8 @@ import org.azolla.l.ling.cfg.PropCfg;
  */
 public class I18N
 {
-    public static PropCfg propCfg = PropCfg.cfg("i18n.james.p.Azolla.Cfg.properties");;
+    public static PropCfg propCfg = PropCfg.cfg("i18n.james.p.Azolla.properties");
+    ;
 
     public static String get(String key)
     {

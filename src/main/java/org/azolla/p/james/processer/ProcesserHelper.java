@@ -39,11 +39,11 @@ public class ProcesserHelper
             for (String processerString : processerArray)
             {
                 //isDate:YYYY-MM-DD
-                String[] validateArray = processerString.split(String.valueOf(Char0.COLON));
+                String[] processArray = processerString.split(String.valueOf(Char0.COLON));
                 Processer processer = null;
-                if(validateArray.length > 0)
+                if(processArray.length > 0)
                 {
-                    processer = processerMap.get(validateArray[0]);
+                    processer = processerMap.get(processArray[0]);
                 }
                 if(processer != null)
                 {

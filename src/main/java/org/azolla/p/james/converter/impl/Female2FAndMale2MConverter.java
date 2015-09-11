@@ -18,20 +18,20 @@ public class Female2FAndMale2MConverter implements Converter
 {
     public static final String CONVERTER_NAME = "Female2FAndMale2MConverter";
 
-    public static final String Female = "Female";
+    public static final String FEMALE = "Female";
     public static final String F      = "F";
-    public static final String Male   = "Male";
+    public static final String MALE   = "Male";
     public static final String M      = "M";
 
     @Override
     public Boolean convert(String[][] dataArray, Integer row, Integer col)
     {
         Boolean rtnBoolean = true;
-        if (Female.equalsIgnoreCase(dataArray[row][col]))
+        if (FEMALE.equalsIgnoreCase(dataArray[row][col]))
         {
             dataArray[row][col] = F;
         }
-        else if (Male.equalsIgnoreCase(dataArray[row][col]))
+        else if (MALE.equalsIgnoreCase(dataArray[row][col]))
         {
             dataArray[row][col] = M;
         }
