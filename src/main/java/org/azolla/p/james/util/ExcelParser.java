@@ -14,7 +14,6 @@ import org.azolla.l.ling.io.Close0;
 import org.azolla.l.ling.util.Log0;
 import org.azolla.p.james.bo.*;
 import org.azolla.p.james.converter.ConverterHelper;
-import org.azolla.p.james.processer.ProcesserHelper;
 import org.azolla.p.james.validater.ValidaterHelper;
 
 import java.io.File;
@@ -147,10 +146,6 @@ public enum ExcelParser
                 {
                     DBCons.ESHEET_COL_INDEX = colIndex;
                 }
-                else if (DBCons.DTSQLMODE_COL_TITLE.equalsIgnoreCase(titleXSSFCell.toString()))
-                {
-                    DBCons.DTSQLMODE_COL_INDEX = colIndex;
-                }
                 else if (DBCons.DBCOLUMN_COL_TITLE.equalsIgnoreCase(titleXSSFCell.toString()))
                 {
                     DBCons.DBCOLUMN_COL_INDEX = colIndex;
@@ -159,41 +154,36 @@ public enum ExcelParser
                 {
                     DBCons.ECOLUMN_COL_INDEX = colIndex;
                 }
-                else if (DBCons.DCDATATYPE_COL_TITLE.equalsIgnoreCase(titleXSSFCell.toString()))
+                else if (DBCons.DBSEQ_COL_TITLE.equalsIgnoreCase(titleXSSFCell.toString()))
                 {
-                    DBCons.DCDATATYPE_COL_INDEX = colIndex;
+                    DBCons.DBSEQ_COL_INDEX = colIndex;
                 }
-                else if (DBCons.ISDCKEY_COL_TITLE.equalsIgnoreCase(titleXSSFCell.toString()))
+                else if (DBCons.DBCOLUMNSQL_COL_TITLE.equalsIgnoreCase(titleXSSFCell.toString()))
                 {
-                    DBCons.ISDCKEY_COL_INDEX = colIndex;
+                    DBCons.DBCOLUMNSQL_COL_INDEX = colIndex;
                 }
-//                else if (DBCons.DCNULLSELECTIVE_COL_TITLE.equalsIgnoreCase(titleXSSFCell.toString()))
-//                {
-//                    DBCons.DCNULLSELECTIVE_COL_INDEX = colIndex;
-//                }
-                else if (DBCons.DCDEFAULTVALUE_COL_TITLE.equalsIgnoreCase(titleXSSFCell.toString()))
+                else if (DBCons.BIZKEY_COL_TITLE.equalsIgnoreCase(titleXSSFCell.toString()))
                 {
-                    DBCons.DCDEFAULTVALUE_COL_INDEX = colIndex;
+                    DBCons.BIZKEY_COL_INDEX = colIndex;
                 }
-                else if (DBCons.ECSEPARATOR_COL_TITLE.equalsIgnoreCase(titleXSSFCell.toString()))
+                else if (DBCons.DEFAULTVALUE_COL_TITLE.equalsIgnoreCase(titleXSSFCell.toString()))
                 {
-                    DBCons.ECSEPARATOR_COL_INDEX = colIndex;
+                    DBCons.DEFAULTVALUE_COL_INDEX = colIndex;
                 }
-                else if (DBCons.DCPROCESSER_COL_TITLE.equalsIgnoreCase(titleXSSFCell.toString()))
+                else if (DBCons.SEPARATOR_COL_TITLE.equalsIgnoreCase(titleXSSFCell.toString()))
                 {
-                    DBCons.DCPROCESSER_COL_INDEX = colIndex;
+                    DBCons.SEPARATOR_COL_INDEX = colIndex;
                 }
             }
             XSSFCell dbTableXSSFCell;
             XSSFCell eSheetXSSFCell;
-            XSSFCell dtSqlMode;
             XSSFCell dbColumnXSSFCell;
             XSSFCell eColumnXSSFCell;
-            XSSFCell dcDataTypeXSSFCell;
-            XSSFCell isDCKeyXSSFCell;
-//            XSSFCell dcNullSelectiveXSSFCell;
-            XSSFCell ecSeparatorXSSFCell;
-            XSSFCell dcProcesserXSSFCell;
+            XSSFCell dbSeqXSSFCell;
+            XSSFCell dbColumnSqlXSSFCell;
+            XSSFCell bizKeyXSSFCell;
+            XSSFCell defaultValueXSSFCell;
+            XSSFCell separatorXSSFCell;
 
             DBTableBo dbTableBo = null;
             DBColumnBo dbColumnBo = null;
@@ -213,14 +203,13 @@ public enum ExcelParser
                     }
                     dbTableXSSFCell = null;
                     eSheetXSSFCell = null;
-                    dtSqlMode = null;
                     dbColumnXSSFCell = null;
                     eColumnXSSFCell = null;
-                    dcDataTypeXSSFCell = null;
-                    isDCKeyXSSFCell = null;
-//                    dcNullSelectiveXSSFCell = null;
-                    ecSeparatorXSSFCell = null;
-                    dcProcesserXSSFCell = null;
+                    dbSeqXSSFCell = null;
+                    dbColumnSqlXSSFCell = null;
+                    bizKeyXSSFCell = null;
+                    defaultValueXSSFCell = null;
+                    separatorXSSFCell = null;
 
                     dbTableBo = null;
                     dbColumnBo = null;
@@ -236,33 +225,41 @@ public enum ExcelParser
                 {
                     dbTableXSSFCell = jamesDBXSSFRow.getCell(DBCons.DBTABLE_COL_INDEX);
                     eSheetXSSFCell = jamesDBXSSFRow.getCell(DBCons.ESHEET_COL_INDEX);
-                    dtSqlMode = jamesDBXSSFRow.getCell(DBCons.DTSQLMODE_COL_INDEX);
                     eColumnXSSFCell = jamesDBXSSFRow.getCell(DBCons.ECOLUMN_COL_INDEX);
-                    dcDataTypeXSSFCell = jamesDBXSSFRow.getCell(DBCons.DCDATATYPE_COL_INDEX);
-                    isDCKeyXSSFCell = jamesDBXSSFRow.getCell(DBCons.ISDCKEY_COL_INDEX);
-//                    dcNullSelectiveXSSFCell = jamesDBXSSFRow.getCell(DBCons.DCNULLSELECTIVE_COL_INDEX);
-                    ecSeparatorXSSFCell = jamesDBXSSFRow.getCell(DBCons.ECSEPARATOR_COL_INDEX);
-                    dcProcesserXSSFCell = jamesDBXSSFRow.getCell(DBCons.DCPROCESSER_COL_INDEX);
+                    dbSeqXSSFCell = jamesDBXSSFRow.getCell(DBCons.DBSEQ_COL_INDEX);
+                    dbColumnSqlXSSFCell = jamesDBXSSFRow.getCell(DBCons.DBCOLUMNSQL_COL_INDEX);
+                    bizKeyXSSFCell = jamesDBXSSFRow.getCell(DBCons.BIZKEY_COL_INDEX);
+                    defaultValueXSSFCell = jamesDBXSSFRow.getCell(DBCons.DEFAULTVALUE_COL_INDEX);
+                    separatorXSSFCell = jamesDBXSSFRow.getCell(DBCons.SEPARATOR_COL_INDEX);
 
                     if (dbTableBo == null)
                     {
-                        dbTableBo = new DBTableBo().setDbTable(dbTableXSSFCell.toString()).seteSheet(eSheetXSSFCell.toString()).setDtSqlMode(dtSqlMode.toString());
+                        dbTableBo = new DBTableBo().setDbTable(dbTableXSSFCell.toString()).seteSheet(eSheetXSSFCell.toString());
                     }
                     dbColumnBo = new DBColumnBo().setDbColumn(dbColumnXSSFCell.toString());
                     if (eColumnXSSFCell != null)
                     {
                         dbColumnBo.seteColumn(eColumnXSSFCell.toString());
                     }
-                    dbColumnBo.setDcDataType(dcDataTypeXSSFCell == null ? DBCons.DCDATATYPE_DEFAULT : dcDataTypeXSSFCell.toString());
-                    dbColumnBo.setDcKey(isDCKeyXSSFCell == null ? false : (DBCons.ISDCKEY_Y.equalsIgnoreCase(isDCKeyXSSFCell.toString()) ? true : false));
-//                    dbColumnBo.setDcNullSelective(dcNullSelectiveXSSFCell == null ? false : (DBCons.DCNULLSELECTIVE_Y.equalsIgnoreCase(dcNullSelectiveXSSFCell.toString()) ? true : false));
-                    if (ecSeparatorXSSFCell != null)
+                    if (dbSeqXSSFCell != null)
                     {
-                        dbColumnBo.setEcSeparator(ecSeparatorXSSFCell.toString());
+                        dbColumnBo.setDbSeq(dbSeqXSSFCell.toString());
                     }
-                    if (dcProcesserXSSFCell != null)
+                    if (dbColumnSqlXSSFCell != null)
                     {
-                        dbColumnBo.addProcesserList(ProcesserHelper.parse(dcProcesserXSSFCell.toString()));
+                        dbColumnBo.setDbColumnSql(dbColumnSqlXSSFCell.toString());
+                    }
+                    if (bizKeyXSSFCell != null)
+                    {
+                        dbColumnBo.setBizKey(bizKeyXSSFCell.toString());
+                    }
+                    if (defaultValueXSSFCell != null)
+                    {
+                        dbColumnBo.setDefaultValue(defaultValueXSSFCell.toString());
+                    }
+                    if (separatorXSSFCell != null)
+                    {
+                        dbColumnBo.setSeparator(separatorXSSFCell.toString());
                     }
                     dbTableBo.addDbColumnBo(dbColumnBo);
                 }

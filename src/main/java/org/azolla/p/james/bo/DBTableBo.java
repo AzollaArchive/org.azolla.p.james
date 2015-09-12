@@ -10,16 +10,15 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.azolla.l.ling.util.List0;
-import org.azolla.p.james.processer.Processer;
-import org.azolla.p.james.util.DBCons;
+import org.azolla.l.ling.lang.Char0;
+import org.azolla.l.ling.lang.String0;
+import org.azolla.p.james.util.Cons;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The coder is very lazy, nothing to write for this class
@@ -33,13 +32,10 @@ public class DBTableBo
 
     private String eSheet;
 
-    private String dtSqlMode;
-
     private List<DBColumnBo> dbColumnBoList = Lists.newArrayList();
 
-    private List<String[]> needDeleteRowIndexList = Lists.newArrayList();
-    private List<String[]> needUpdateRowIndexList = Lists.newArrayList();
-    private List<String[]> needInsertRowIndexList = Lists.newArrayList();
+    private String sqlTemplate = "insert into {0}({1}) select {2};";
+    ;
 
     public List<String> getSqlList()
     {
@@ -49,173 +45,63 @@ public class DBTableBo
 
         List<String[]> rowList = excelSheetBo.getNoErrorRowList();
         rowList = separator(rowList, excelSheetBo);
-        rowList = processer(rowList, excelSheetBo);
-        keySql(rowList, excelSheetBo);
-        rtnList.addAll(generateSqlList(excelSheetBo));
+        rtnList.addAll(generateSqlList(rowList, excelSheetBo));
 
         return rtnList;
     }
 
-    public List<String> generateSqlList(ExcelSheetBo excelSheetBo)
+    public List<String> generateSqlList(List<String[]> rowList, ExcelSheetBo excelSheetBo)
     {
         List<String> sqlList = Lists.newArrayList();
 
-        sqlList.addAll(generateDeleteSqlList(excelSheetBo));
-        sqlList.addAll(generateUpdateSqlList(excelSheetBo));
-        sqlList.addAll(generateInsertSqlList(excelSheetBo));
+        for (String[] colArray : rowList)
+        {
+            sqlList.add(generateSql(colArray, excelSheetBo));
+        }
 
         return sqlList;
     }
 
-    public List<String> generateInsertSqlList(ExcelSheetBo excelSheetBo)
+    public String generateSql(String[] colArray, ExcelSheetBo excelSheetBo)
     {
-        List<String> sqlList = Lists.newArrayList();
-
-        Map<Integer, DBColumnBo> columnMap = Maps.newHashMap();
-        Map<Integer, Integer> columnIndexMap = Maps.newHashMap();
-        int i = 0;
-        for(DBColumnBo dbColumnBo : dbColumnBoList)
+        StringBuffer colStringBuffer = new StringBuffer();
+        StringBuffer valStringBuffer = new StringBuffer();
+        for (DBColumnBo dbColumnBo : dbColumnBoList)
         {
-            columnMap.put(i, dbColumnBo);
-            if(!Strings.isNullOrEmpty(dbColumnBo.geteColumn()))
+            if (!Cons.Y.equalsIgnoreCase(dbColumnBo.getDbSeq()))
             {
-                columnIndexMap.put(i, excelSheetBo.getStringIntegerMap().get(dbColumnBo.geteColumn()));
-            }
-            i ++;
-        }
-        if(i != 0)
-        {
-            StringBuffer colSb = new StringBuffer();
-            colSb.append("insert into ").append(dbTable).append(" (").append(columnMap.get(0).getDbColumn());
-            for(int j = 1; j < i; j ++)
-            {
-                colSb.append(",").append(columnMap.get(j).getDbColumn());
-            }
-            colSb.append(") values (");
-
-            String colStr = colSb.toString();
-            StringBuffer sqlSb = null;
-            //TODO
-            for(String[] rowArray : needInsertRowIndexList)
-            {
-                sqlSb = new StringBuffer(colStr).append(columnMap.get(0).getStringWithDataType(rowArray[columnIndexMap.get(0)]));
-                for(int j = 1; j < i; j ++)
+                colStringBuffer.append(String0.COMMA).append(dbColumnBo.getDbColumn());
+                if (Strings.isNullOrEmpty(dbColumnBo.geteColumn()))
                 {
-                    Integer colIndex = columnIndexMap.get(j);
-                    sqlSb.append(",").append(columnMap.get(j).getStringWithDataType(colIndex == null ? null : rowArray[colIndex]));
-                }
-                sqlSb.append(")");
-                sqlList.add(sqlSb.toString());
-            }
-        }
-
-        return sqlList;
-    }
-
-    public List<String> generateUpdateSqlList(ExcelSheetBo excelSheetBo)
-    {
-        List<String> sqlList = Lists.newArrayList();
-
-        //TODO
-
-        return sqlList;
-    }
-
-    public List<String> generateDeleteSqlList(ExcelSheetBo excelSheetBo)
-    {
-        List<String> sqlList = Lists.newArrayList();
-
-        //TODO
-
-        return sqlList;
-    }
-
-    public void keySql(List<String[]> rowList, ExcelSheetBo excelSheetBo)
-    {
-        List<String[]> existList = exist(rowList, excelSheetBo);
-        if(DBCons.SQLMODE_D_I.equalsIgnoreCase(dtSqlMode))
-        {
-            needDeleteRowIndexList.addAll(existList);
-            needInsertRowIndexList.addAll(rowList);
-        }
-        else if(DBCons.SQLMODE_U_I.equalsIgnoreCase(dtSqlMode))
-        {
-            needUpdateRowIndexList.addAll(existList);
-            needInsertRowIndexList.addAll(List0.listNotExistInOther(rowList,existList));
-        }
-        else
-        {
-            needInsertRowIndexList.addAll(rowList);
-        }
-    }
-
-    public List<String[]> exist(List<String[]> rowList, ExcelSheetBo excelSheetBo)
-    {
-        List<String[]> rtnList = Lists.newArrayList();
-
-        Map<Integer, DBColumnBo> keyColumnMap = Maps.newHashMap();
-        List<String> keyColumnSqlList = Lists.newArrayList();
-        List<Integer> keyColumnIndexList = Lists.newArrayList();
-        int i = 0;
-        for(DBColumnBo dbColumnBo : dbColumnBoList)
-        {
-            if(dbColumnBo.getDcKey() == true)
-            {
-                keyColumnMap.put(i, dbColumnBo);
-                keyColumnSqlList.add(i, dbColumnBo.geteColumn() + " = ?");
-                keyColumnIndexList.add(i, excelSheetBo.getStringIntegerMap().get(dbColumnBo.geteColumn()));
-                i ++;
-            }
-        }
-        if(i != 0)
-        {
-            StringBuffer sql = new StringBuffer();
-            sql.append("select * from ").append(dbTable).append(" where ");
-            sql.append(Joiner.on(" and ").join(keyColumnSqlList));
-            //TODO
-            for(int j = 0; j < i; j ++)
-            {
-                //TODO set
-            }
-        }
-
-        return rtnList;
-    }
-
-    public List<String[]> processer(List<String[]> rowList, ExcelSheetBo excelSheetBo)
-    {
-        for(DBColumnBo dbColumnBo : dbColumnBoList)
-        {
-            final Integer colIndex = excelSheetBo.getStringIntegerMap().get(dbColumnBo.geteColumn());
-            for(Processer processer : dbColumnBo.getProcesserList())
-            {
-                if(processer.getProcesserName().contains("List"))
-                {
-                    Map<String, String> colMap = processer.process(Lists.transform(rowList, new Function<String[], String>()
-                    {
-                        @Nullable
-                        @Override
-                        public String apply(String[] input)
-                        {
-                            return input[colIndex];
-                        }
-                    }));
-                    for(String[] rowArray : rowList)
-                    {
-                        rowArray[colIndex] = colMap.get(rowArray[colIndex]);
-                    }
+                    valStringBuffer.append(String0.COMMA).append(Char0.SINGLE_QUOTATION).append(dbColumnBo.getDefaultValue()).append(Char0.SINGLE_QUOTATION);
                 }
                 else
                 {
-                    for(String[] rowArray : rowList)
+                    if (Strings.isNullOrEmpty(dbColumnBo.getDbColumnSql()))
                     {
-                        rowArray[colIndex] = processer.process(rowArray[colIndex]).get(rowArray[colIndex]);
+                        valStringBuffer.append(String0.COMMA).append(Char0.SINGLE_QUOTATION).append(colArray[excelSheetBo.getStringIntegerMap().get(dbColumnBo.geteColumn())]).append(Char0.SINGLE_QUOTATION);
+                    }
+                    else
+                    {
+                        if (dbColumnBo.geteColumn().contains(String0.COMMA))
+                        {
+                            String[] eColArray = dbColumnBo.geteColumn().split(String0.COMMA);
+                            String[] vColArray = new String[eColArray.length];
+                            for (int i = 0; i < eColArray.length; i++)
+                            {
+                                vColArray[i] = colArray[excelSheetBo.getStringIntegerMap().get(eColArray[i])];
+                            }
+                            valStringBuffer.append(String0.COMMA).append(new MessageFormat(dbColumnBo.getDbColumnSql()).format(vColArray));
+                        }
+                        else
+                        {
+                            valStringBuffer.append(String0.COMMA).append(MessageFormat.format(dbColumnBo.getDbColumnSql(), colArray[excelSheetBo.getStringIntegerMap().get(dbColumnBo.geteColumn())]));
+                        }
                     }
                 }
             }
         }
-
-        return rowList;
+        return MessageFormat.format(sqlTemplate, dbTable, colStringBuffer.toString().substring(1), valStringBuffer.toString().substring(1));
     }
 
     public List<String[]> separator(List<String[]> rowList, ExcelSheetBo excelSheetBo)
@@ -223,11 +109,11 @@ public class DBTableBo
         List<String[]> rtnList = rowList;
         String separator = null;
         Integer colIndex = null;
-        for(DBColumnBo dbColumnBo : dbColumnBoList)
+        for (DBColumnBo dbColumnBo : dbColumnBoList)
         {
-            separator = dbColumnBo.getEcSeparator();
+            separator = dbColumnBo.getSeparator();
             colIndex = excelSheetBo.getStringIntegerMap().get(dbColumnBo.geteColumn());
-            if(!Strings.isNullOrEmpty(separator) && colIndex != null)
+            if (!Strings.isNullOrEmpty(separator) && colIndex != null)
             {
                 rtnList = separator(rtnList, separator, colIndex);
             }
@@ -235,16 +121,16 @@ public class DBTableBo
         return rtnList;
     }
 
-    public List<String[]> separator(@Nonnull List<String[]> rowList,@Nonnull String separator,@Nonnull Integer colIndex)
+    public List<String[]> separator(@Nonnull List<String[]> rowList, @Nonnull String separator, @Nonnull Integer colIndex)
     {
         List<String[]> newRowList = Lists.newArrayList();
         String cell = null;
-        for(String[] rowArray : rowList)
+        for (String[] rowArray : rowList)
         {
             cell = rowArray[colIndex];
-            if(cell != null && cell.contains(separator))
+            if (cell != null && cell.contains(separator))
             {
-                for(String s : cell.split(separator))
+                for (String s : cell.split(separator))
                 {
                     String[] newRowArray = Arrays.copyOf(rowArray, rowArray.length);
                     newRowArray[colIndex] = s;
@@ -281,17 +167,6 @@ public class DBTableBo
         return this;
     }
 
-    public String getDtSqlMode()
-    {
-        return dtSqlMode;
-    }
-
-    public DBTableBo setDtSqlMode(String dtSqlMode)
-    {
-        this.dtSqlMode = dtSqlMode;
-        return this;
-    }
-
     public List<DBColumnBo> getDbColumnBoList()
     {
         return dbColumnBoList;
@@ -305,7 +180,7 @@ public class DBTableBo
 
     public DBTableBo addDbColumnBo(DBColumnBo dbColumnBo)
     {
-        if(dbColumnBo != null)
+        if (dbColumnBo != null)
         {
             return addDbColumnBoList(Lists.newArrayList(dbColumnBo));
         }
@@ -314,7 +189,7 @@ public class DBTableBo
 
     public DBTableBo addDbColumnBoList(List<DBColumnBo> dbColumnBoList)
     {
-        if(dbColumnBoList != null)
+        if (dbColumnBoList != null)
         {
             this.dbColumnBoList.addAll(dbColumnBoList);
         }

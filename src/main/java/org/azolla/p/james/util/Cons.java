@@ -21,4 +21,6 @@ public class Cons
     public static final Integer JAMES_DB_TITLE_ROW_INDEX    = 1;
     public static final Integer JAMES_DATA_TITLE_ROW_INDEX  = 1;
 
+    public static final String Y = "Y";
+
 }

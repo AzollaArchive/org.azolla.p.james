@@ -6,13 +6,6 @@
  */
 package org.azolla.p.james.bo;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import org.azolla.p.james.processer.Processer;
-import org.azolla.p.james.util.DBCons;
-
-import java.util.List;
-
 /**
  * The coder is very lazy, nothing to write for this class
  *
@@ -25,50 +18,15 @@ public class DBColumnBo
 
     private String eColumn;
 
-    private String dcDataType;
+    private String dbSeq;
 
-    private Boolean dcKey;
+    private String dbColumnSql;
 
-//    private Boolean dcNullSelective;
+    private String bizKey;
 
-    private String dcDefaultValue;
+    private String defaultValue;
 
-    private String ecSeparator;
-
-    private List<Processer> processerList = Lists.newArrayList();
-
-    public String getStringWithDataType(String s)
-    {
-        String rtnString = s;
-        if(Strings.isNullOrEmpty(s))
-        {
-            rtnString = "null";
-        }
-        else
-        {
-            if(dcDataType != null)
-            {
-                if(dcDataType.contains("?"))
-                {
-                    rtnString = dcDataType.replace("?",s);
-                }
-                else if(DBCons.DCDATATYPE_STRING.equalsIgnoreCase(dcDataType))
-                {
-                    rtnString = "'"+s+"'";
-                }
-                else
-                {
-                    rtnString = s;
-                }
-            }
-            else
-            {
-                rtnString = "'"+s+"'";
-            }
-        }
-
-        return rtnString;
-    }
+    private String separator;
 
     public String getDbColumn()
     {
@@ -92,87 +50,58 @@ public class DBColumnBo
         return this;
     }
 
-    public String getDcDataType()
+    public String getDbSeq()
     {
-        return dcDataType;
+        return dbSeq;
     }
 
-    public DBColumnBo setDcDataType(String dcDataType)
+    public DBColumnBo setDbSeq(String dbSeq)
     {
-        this.dcDataType = dcDataType;
+        this.dbSeq = dbSeq;
         return this;
     }
 
-    public Boolean getDcKey()
+    public String getDbColumnSql()
     {
-        return dcKey;
+        return dbColumnSql;
     }
 
-    public DBColumnBo setDcKey(Boolean dcKey)
+    public DBColumnBo setDbColumnSql(String dbColumnSql)
     {
-        this.dcKey = dcKey;
+        this.dbColumnSql = dbColumnSql;
         return this;
     }
 
-//    public Boolean getDcNullSelective()
-//    {
-//        return dcNullSelective;
-//    }
-//
-//    public DBColumnBo setDcNullSelective(Boolean dcNullSelective)
-//    {
-//        this.dcNullSelective = dcNullSelective;
-//        return this;
-//    }
-
-    public String getDcDefaultValue()
+    public String getBizKey()
     {
-        return dcDefaultValue;
+        return bizKey;
     }
 
-    public DBColumnBo setDcDefaultValue(String dcDefaultValue)
+    public DBColumnBo setBizKey(String bizKey)
     {
-        this.dcDefaultValue = dcDefaultValue;
+        this.bizKey = bizKey;
         return this;
     }
 
-    public String getEcSeparator()
+    public String getDefaultValue()
     {
-        return ecSeparator;
+        return defaultValue;
     }
 
-    public DBColumnBo setEcSeparator(String ecSeparator)
+    public DBColumnBo setDefaultValue(String defaultValue)
     {
-        this.ecSeparator = ecSeparator;
+        this.defaultValue = defaultValue;
         return this;
     }
 
-    public List<Processer> getProcesserList()
+    public String getSeparator()
     {
-        return processerList;
+        return separator;
     }
 
-    public DBColumnBo setProcesserList(List<Processer> processerList)
+    public DBColumnBo setSeparator(String separator)
     {
-        this.processerList = processerList;
-        return this;
-    }
-
-    public DBColumnBo addProcesser(Processer processer)
-    {
-        if(processer != null)
-        {
-            return addProcesserList(Lists.newArrayList(processer));
-        }
-        return this;
-    }
-
-    public DBColumnBo addProcesserList(List<Processer> processerList)
-    {
-        if(processerList != null)
-        {
-            this.processerList.addAll(processerList);
-        }
+        this.separator = separator;
         return this;
     }
 }

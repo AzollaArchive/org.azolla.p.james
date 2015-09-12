@@ -14,48 +14,24 @@ package org.azolla.p.james.util;
  */
 public class DBCons
 {
-    public static final String DBTABLE_COL_TITLE         = "DBTable";
-    public static final String ESHEET_COL_TITLE          = "ESheet";
-    public static final String DTSQLMODE_COL_TITLE       = "DTSqlMode";
-    public static final String DBCOLUMN_COL_TITLE        = "DBColumn";
-    public static final String ECOLUMN_COL_TITLE         = "EColumn";
-    public static final String DCDATATYPE_COL_TITLE      = "DCDataType";
-    public static final String ISDCKEY_COL_TITLE         = "isDCKey";
-//    public static final String DCNULLSELECTIVE_COL_TITLE = "DCNullSelective";
-    public static final String DCDEFAULTVALUE_COL_TITLE  = "DCDefaultValue";
-    public static final String ECSEPARATOR_COL_TITLE     = "ECSeparator";
-    public static final String DCPROCESSER_COL_TITLE     = "DCProcesser";
+    public static final String DBTABLE_COL_TITLE      = "DBTable";
+    public static final String ESHEET_COL_TITLE       = "ESheet";
+    public static final String DBCOLUMN_COL_TITLE     = "DBColumn";
+    public static final String ECOLUMN_COL_TITLE      = "EColumn";
+    public static final String DBSEQ_COL_TITLE        = "DBSeq";
+    public static final String DBCOLUMNSQL_COL_TITLE  = "DBColumnSql";
+    public static final String BIZKEY_COL_TITLE       = "BizKey";
+    public static final String DEFAULTVALUE_COL_TITLE = "DefaultValue";
+    public static final String SEPARATOR_COL_TITLE    = "Separator";
 
-
-    public static final String DCDATATYPE_STRING     = "STRING";
-    public static final String DCDATATYPE_INTEGER    = "INTEGER";
-    public static final String DCDATATYPE_DOUBLE     = "DOUBLE";
-    public static final String DCDATATYPE_DATE       = "DATE";
-    public static final String DCDATATYPE_BIGDECIMAL = "BIGDECIMAL";
-    public static final String DCDATATYPE_DEFAULT    = DCDATATYPE_STRING;
-
-    public static final String ISDCKEY_Y       = "Y";
-    public static final String ISDCKEY_N       = "N";
-    public static final String ISDCKEY_DEFAULT = ISDCKEY_N;
-
-//    public static final String DCNULLSELECTIVE_Y       = "Y";
-//    public static final String DCNULLSELECTIVE_N       = "N";
-//    public static final String DCNULLSELECTIVE_DEFAULT = DCNULLSELECTIVE_N;
-
-    public static final String SQLMODE_I   = "INSERT";
-    public static final String SQLMODE_D_I = "DELETE&INSERT";
-    public static final String SQLMODE_U_I = "UPDATE&INSERT";
-
-    public static Integer DBTABLE_COL_INDEX         = 0;
-    public static Integer ESHEET_COL_INDEX          = 1;
-    public static Integer DTSQLMODE_COL_INDEX       = 2;
-    public static Integer DBCOLUMN_COL_INDEX        = 3;
-    public static Integer ECOLUMN_COL_INDEX         = 4;
-    public static Integer DCDATATYPE_COL_INDEX      = 5;
-    public static Integer ISDCKEY_COL_INDEX         = 6;
-//    public static Integer DCNULLSELECTIVE_COL_INDEX = 7;
-    public static Integer DCDEFAULTVALUE_COL_INDEX  = 7;
-    public static Integer ECSEPARATOR_COL_INDEX     = 8;
-    public static Integer DCPROCESSER_COL_INDEX     = 9;
+    public static Integer DBTABLE_COL_INDEX      = 0;
+    public static Integer ESHEET_COL_INDEX       = 1;
+    public static Integer DBCOLUMN_COL_INDEX     = 2;
+    public static Integer ECOLUMN_COL_INDEX      = 3;
+    public static Integer DBSEQ_COL_INDEX        = 4;
+    public static Integer DBCOLUMNSQL_COL_INDEX  = 5;
+    public static Integer BIZKEY_COL_INDEX       = 6;
+    public static Integer DEFAULTVALUE_COL_INDEX = 7;
+    public static Integer SEPARATOR_COL_INDEX    = 8;
 
 }
