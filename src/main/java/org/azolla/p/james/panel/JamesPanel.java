@@ -170,7 +170,7 @@ public class JamesPanel extends JPanel
 
         pathTextField.setEditable(false);
 //        pathTextField.setFocusable(false);
-        add(pathTextField, GBC.grid(1, 0, 8, 1).weight(8, 0).anchor(GBC.CENTER).fill(GBC.HORIZONTAL).insets(8, 1, 1, 1));
+        add(pathTextField, GBC.grid(1, 0, 8, 1).weight(8, 0).anchor(GBC.CENTER).fill(GBC.BOTH).insets(8, 1, 1, 1));
 
         add(selectButton, GBC.grid(9, 0, 1, 1).weight(0, 0).anchor(GBC.WEST).fill(GBC.NONE).insets(8, 1, 1, 8));
 
