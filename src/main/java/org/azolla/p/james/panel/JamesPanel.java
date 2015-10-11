@@ -7,6 +7,7 @@
 package org.azolla.p.james.panel;
 
 import com.google.common.base.Strings;
+import org.azolla.l.ling.i18n.I18N0;
 import org.azolla.l.ling.io.File0;
 import org.azolla.l.ling.lang.String0;
 import org.azolla.l.ling.net.Url0;
@@ -17,7 +18,6 @@ import org.azolla.l.sunny.layout.GBC;
 import org.azolla.l.sunny.task.UITasks;
 import org.azolla.p.james.bo.ExcelSheetBo;
 import org.azolla.p.james.bo.JamesBo;
-import org.azolla.p.james.i18n.I18N;
 import org.azolla.p.james.startup.Startup;
 import org.azolla.p.james.util.ExcelParser;
 
@@ -40,9 +40,9 @@ public class JamesPanel extends JPanel
     public static final int H = 100;
 
     JTextField pathTextField          = new JTextField();
-    JButton    selectButton           = new JButton(I18N.get("Select"));
-    JButton    downloadTemplateButton = new JButton(I18N.get("DownloadTemplate"));
-    JButton    generateSqlButton      = new JButton(I18N.get("GenerateSql"));
+    JButton    selectButton           = new JButton(I18N0.i18n(this.getClass()).get("Select"));
+    JButton    downloadTemplateButton = new JButton(I18N0.i18n(this.getClass()).get("DownloadTemplate"));
+    JButton    generateSqlButton      = new JButton(I18N0.i18n(this.getClass()).get("GenerateSql"));
 
     private JamesPanel()
     {
@@ -72,13 +72,13 @@ public class JamesPanel extends JPanel
             int result = jFileChooser.showSaveDialog(JamesPanel.single());
             if (result == JFileChooser.APPROVE_OPTION)
             {
-                if (File0.copy(File0.newFile(Url0.getURL(I18N.get("TEMPLATE_NAME")).getPath()), jFileChooser.getSelectedFile()))
+                if (File0.copy(File0.newFile(Url0.getURL(I18N0.i18n(this.getClass()).get("TEMPLATE_NAME")).getPath()), jFileChooser.getSelectedFile()))
                 {
-                    Msg.info(JamesPanel.single(), I18N.get("MSG_OPERATION_SUCCESSFULLY"));
+                    Msg.info(JamesPanel.single(), I18N0.i18n(this.getClass()).get("MSG_OPERATION_SUCCESSFULLY"));
                 }
                 else
                 {
-                    Msg.error(JamesPanel.single(), I18N.get("MSG_OPERATION_FAILED"));
+                    Msg.error(JamesPanel.single(), I18N0.i18n(this.getClass()).get("MSG_OPERATION_FAILED"));
                 }
             }
         });
@@ -99,12 +99,12 @@ public class JamesPanel extends JPanel
                         @Override
                         public Object call() throws Exception
                         {
-                            Startup.refreshTitle(I18N.get("ING_PROCESS"));
+                            Startup.refreshTitle(I18N0.i18n(this.getClass()).get("ING_PROCESS"));
                             JamesBo.single().clear();
 
                             ExcelParser.SIGLETON.parseJamesExcel(finalCurrentFile);
                             ExcelParser.SIGLETON.parseJamesDB(finalCurrentFile);
-                            for(ExcelSheetBo excelSheetBo : JamesBo.single().getStringExcelSheetBoMap().values())
+                            for (ExcelSheetBo excelSheetBo : JamesBo.single().getStringExcelSheetBoMap().values())
                             {
                                 ExcelParser.SIGLETON.parseJamesData(finalCurrentFile, excelSheetBo);
                             }
@@ -113,7 +113,7 @@ public class JamesPanel extends JPanel
                             File folder = File0.newFile(finalCurrentFile.getParentFile(), Date0.DATATIME());
                             folder.mkdirs();
                             JamesBo.single().generateSql(folder);
-                            if(JamesBo.single().hasError())
+                            if (JamesBo.single().hasError())
                             {
                                 JamesBo.single().recordError(folder);
                             }
@@ -128,12 +128,12 @@ public class JamesPanel extends JPanel
                 }
                 finally
                 {
-                    Startup.refreshTitle(I18N.get("version"));
+                    Startup.refreshTitle(I18N0.i18n(this.getClass()).get("version"));
                 }
             }
             else
             {
-                Msg.error(JamesPanel.single(), MessageFormat.format(I18N.get("FMT_CANNOT_FIND"), pathTextField.getText()));
+                Msg.error(JamesPanel.single(), MessageFormat.format(I18N0.i18n(this.getClass()).get("FMT_CANNOT_FIND"), pathTextField.getText()));
             }
         });
     }
@@ -142,7 +142,7 @@ public class JamesPanel extends JPanel
     {
         JFileChooser jFileChooser = new JFileChooser();
         jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        jFileChooser.setFileFilter(new FileNameExtensionFilter(I18N.get("FILE_DESC_EXCEL"), new String[]{I18N.get("FILE_SUFFIX_XLSX")}));
+        jFileChooser.setFileFilter(new FileNameExtensionFilter(I18N0.i18n(this.getClass()).get("FILE_DESC_EXCEL"), new String[]{I18N0.i18n(this.getClass()).get("FILE_SUFFIX_XLSX")}));
         File currentFile = null;
         if (!Strings.isNullOrEmpty(pathTextField.getText()))
         {
@@ -165,7 +165,7 @@ public class JamesPanel extends JPanel
         setLayout(new GridBagLayout());
 //        setBackground(new Color(192, 192, 192, 192));
 
-        JLabel selectPathButtion = new JLabel(I18N.get("SelectPath"));
+        JLabel selectPathButtion = new JLabel(I18N0.i18n(this.getClass()).get("SelectPath"));
         add(selectPathButtion, GBC.grid(0, 0, 1, 1).weight(0, 0).anchor(GBC.EAST).fill(GBC.NONE).insets(8, 8, 1, 1));
 
         pathTextField.setEditable(false);

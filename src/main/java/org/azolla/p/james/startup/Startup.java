@@ -6,8 +6,8 @@
  */
 package org.azolla.p.james.startup;
 
+import org.azolla.l.ling.i18n.I18N0;
 import org.azolla.l.ling.util.Log0;
-import org.azolla.p.james.i18n.I18N;
 import org.azolla.p.james.panel.JamesPanel;
 
 import javax.swing.*;
@@ -44,19 +44,19 @@ public class Startup
         //do nothing
         tzfeFrame.setLayout(new BorderLayout());
         tzfeFrame.add(JamesPanel.single(), BorderLayout.CENTER);
-        refreshTitle(I18N.get("version"));
+        refreshTitle(I18N0.i18n(Startup.class).get("version"));
         tzfeFrame.setSize(JamesPanel.W, JamesPanel.H);
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         tzfeFrame.setLocation((int) (screen.getWidth() - JamesPanel.W) / 2, (int) (screen.getHeight() - JamesPanel.H) / 2);
         tzfeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         tzfeFrame.setResizable(false);
         tzfeFrame.setVisible(true);
-        Log0.info(Startup.class,"James started");
+        Log0.info(Startup.class, "James started");
     }
 
     public static void refreshTitle(String state)
     {
-        tzfeFrame.setTitle(I18N.get("artifact") + " - " + state);
+        tzfeFrame.setTitle(I18N0.i18n(Startup.class).get("artifact") + " - " + state);
     }
 
 
