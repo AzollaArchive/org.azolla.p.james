@@ -1,5 +1,5 @@
-## Azolla.org Projects
-More to see [p.azolla.org][].
+## James
+Azolla.org Custom Initial Database, More to see [p.azolla.org][].
 
 ## Dependencies
 [![][versioneye img]][versioneye]
@@ -19,7 +19,7 @@ More to see [p.azolla.org][].
 ## License
 [![][license img]][license]
 
-The Azolla.org Projects is released under version 2.0 of the [Apache License][].
+The Azolla.org Projects is released under [MIT][].
 
 
 
@@ -48,8 +48,8 @@ The Azolla.org Projects is released under version 2.0 of the [Apache License][].
 [gitter img]:https://badges.gitter.im/Join%20Chat.svg
 
 
-[Apache License]: http://www.apache.org/licenses/LICENSE-2.0
+[MIT]: https://opensource.org/licenses/MIT
 [license]:LICENSE
-[license img]:https://img.shields.io/badge/license-apache-blue.svg
+[license img]:https://img.shields.io/badge/License-MIT-blue.svg
 
 
